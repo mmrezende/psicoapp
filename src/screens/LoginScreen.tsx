@@ -1,22 +1,18 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
 import { TextField } from './components/TextField';
-
-import { API_URL } from '@env'; 
-
-import { Error } from '../helpers/types'
-
-interface Data {
-    email: string;
-    password: string;
-}
+import { Error, LoginData } from '../helpers/types'
+import { AuthContext } from '../auth/AuthContext';
+import { Spinner } from './components/Spinner';
 
 export default function LoginScreen({ navigation }) {
-    const { register, setValue, handleSubmit } = useForm();
+    const { login } = useContext(AuthContext);
 
-    const [ errors, setErrors ] = useState<{[field: string]: Error}>({});
+    const { register, setValue, handleSubmit } = useForm();
+    const [ errors, setErrors ] = useState<{[field: string]: Error}>(null);
+    const [loading, setLoading ] = useState(false);
 
     useEffect(() => {
             register('email')
@@ -24,14 +20,22 @@ export default function LoginScreen({ navigation }) {
         }, [register]
     );
 
-    const onSubmit = ({email, password} : Data) => {
-        // axios.get("https://pcare.nextline.com.br")
-        //     .then(() => Alert.alert(email, password))
-        //     .catch(console.error)
-        console.log(API_URL)
+    const onSubmit = (data: LoginData) => {
+        setLoading(true);
+        setErrors(null);
+        login(data)
+            .then(() => navigation.navigate('Home'))
+            .catch((err) => {
+                const fields = err.response.data?.errors;
+                setErrors(fields);
+            })
+            .finally(() => setLoading(false))
     };
 
     return(
+        loading ? 
+            <Spinner/>
+        :
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image 
@@ -92,6 +96,6 @@ const styles = StyleSheet.create({
         width: 256
     },
     button: {
-        marginTop: 8
+        marginTop: 24
     }
 });

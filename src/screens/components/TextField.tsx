@@ -13,7 +13,7 @@ export const TextField = ({ label, error, ...inputProps } : Props & TextInputPro
         style={styles.input}
         {...inputProps}
       />
-      {error && <Text style={styles.errorMessage}>{error.message}</Text>}
+      {error && <Text style={styles.errorMessage}>{error}</Text>}
     </View>
 );
 
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         borderColor: '#777'
     },
     errorMessage: {
-
+        paddingVertical: 5,
+        color: '#F00'
     }
 });

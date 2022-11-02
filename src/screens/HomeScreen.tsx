@@ -1,9 +1,14 @@
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { AuthContext } from '../auth/AuthContext';
 
 export default function HomeScreen() {
+    const { authState } = useContext(AuthContext);
+    
     return(
         <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
+            <Text>Autenticado!</Text>
+            <Text>{authState.user?.name}</Text>
         </View>
     );
 }
