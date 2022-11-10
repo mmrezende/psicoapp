@@ -2,10 +2,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
-import { TextField } from './components/TextField';
+import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
-import { Spinner } from './components/Spinner';
+import { Spinner } from '../components/Spinner';
 
 export default function LoginScreen({ navigation }) {
     const { login } = useContext(AuthContext);

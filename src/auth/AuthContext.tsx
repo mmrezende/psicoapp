@@ -38,7 +38,7 @@ const AuthProvider = ({children} : PropsWithChildren) => {
     }
 
     createAuthRefreshInterceptor(authAxios, refreshAuthLogic, {
-        statusCodes: []
+        statusCodes: [401]
     });
 
     const logout = async() => {
