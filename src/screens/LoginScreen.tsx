@@ -24,9 +24,8 @@ export default function LoginScreen({ navigation }) {
         setLoading(true);
         setErrors(null);
         login(data)
-            .then(() => navigation.navigate('Home'))
             .catch((err) => {
-                const fields = err.response.data?.errors;
+                const fields = err.response?.data?.errors;
                 setErrors(fields);
             })
             .finally(() => setLoading(false))

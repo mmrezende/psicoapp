@@ -28,12 +28,12 @@ const AuthProvider = ({children} : PropsWithChildren) => {
     const refreshAuthLogic = async() => {
         return authAxios
             .post<AuthResponse>('/auth/refresh')
-            .catch(error => {
+            .catch(() => {
                 setAuthState({
                     authenticated: false,
                     user: null
                 });
-                throw error;
+                return logout();
             });
     }
 

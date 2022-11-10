@@ -14,8 +14,9 @@ export default function Navigator() {
 
     useEffect(() => {
         if(!authContext.authState.authenticated) {
-            authContext.logout();
             navigationRef.navigate('Login');
+        }else {
+            navigationRef.navigate('Home');
         }
     }, [authContext.authState]);
 
