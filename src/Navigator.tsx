@@ -5,6 +5,7 @@ import { AuthContext } from './auth/AuthContext';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import { LogoutButton } from './components/LogoutButton';
+import FormScreen from './screens/FormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function Navigator() {
                     options={{ headerRight: null}}/>
                 <Stack.Screen name="Home" component={HomeScreen}
                     options={{ headerBackVisible: false }} />
+                <Stack.Screen name="Form" options={{headerTitle: "Formulário"}} component={FormScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
