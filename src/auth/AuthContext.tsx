@@ -54,7 +54,7 @@ const AuthProvider = ({children} : PropsWithChildren) => {
 
     const login = async(data: LoginData) => {
         return authAxios
-            .post<AuthResponse>('/auth/login', data)
+            .post<AuthResponse>('/auth/login', {...data, app: true})
             .then(response => {
                 setAuthState({
                     authenticated: true,
