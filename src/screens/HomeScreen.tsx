@@ -16,7 +16,10 @@ export default function HomeScreen({navigation}) {
     });
 
     function handleOpenForm(clinic: Clinic) {
-        navigation.navigate('Form')
+        navigation.navigate({
+            name: 'Form',
+            params: {clinic}
+        });
     }
 
     return(
