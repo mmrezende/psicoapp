@@ -25,7 +25,7 @@ export default function HomeScreen({navigation}) {
     return(
         <View style={styles.container}>
             {query.isLoading ?
-                <Spinner/> :                
+                <Spinner/> :
                 <FlatList
                     data={query.data}
                     renderItem={({item}) => <ClinicCard clinic={item} openForm={handleOpenForm}/>}
