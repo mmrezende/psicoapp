@@ -1,7 +1,7 @@
 export class File {
     id: number;
     name: string;
-    constent_type: string;
+    content_type: string;
     size: number;
     url: string;
 }
