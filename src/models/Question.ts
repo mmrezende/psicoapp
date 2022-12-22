@@ -1,10 +1,10 @@
 import { Option } from "./Option";
 
 export enum QuestionType {
-    BINARY,
-    MULTIPLE_CHOICE,
-    SINGLE_CHOICE,
-    TEXT
+    BINARY = "BINARY",
+    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+    SINGLE_CHOICE = "SINGLE_CHOICE",
+    TEXT = "TEXT"
 }
 
 export class Question {

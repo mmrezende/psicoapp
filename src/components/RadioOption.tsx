@@ -4,16 +4,15 @@ import { Option } from '../models/Option';
 
 type Props = {option: Option};
 
-export const RadioInput = ({option}: Props) => (
+export const RadioOption = ({option}: Props) => (
 	<View>
-        <RadioButton value={String(option.id)}/>
-        <Text>{option.text}</Text>
-        <Image 
+        <RadioButton.Item value={String(option.id)} label={option.text}/>
+        {option.image && <Image 
             source={{
                 uri: option.image.url,
                 width: 500,
                 height: 500
             }}
-        />
+        />}
 	</View>
 );
