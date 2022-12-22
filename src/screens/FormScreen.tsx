@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { AuthContext } from "../auth/AuthContext";
@@ -18,6 +18,8 @@ export default function FormScreen({navigation, route}) {
         queryFn: () => getForms(axios, clinic),
     });
 
+    const [answerGroup, setAnswerGroup] = useState<Map<Number,AnswerType>>(new Map());
+
     return(
         <View style={styles.container}>
             {query.isLoading ?
@@ -25,17 +27,19 @@ export default function FormScreen({navigation, route}) {
                 query.data.length === 0 ?
                     <Text style={styles.warning}>Não há formulários pendentes para este consultório.</Text> :
                     <FlatList
-                        data={
-                            query.data
-                                .flatMap(form => form.questions) // Join all the forms
-                                .filter((val, index, arr) => { // Don't render duplicate questions
-                                    return arr.findIndex(val2 => val2.id === val.id) === index;
-                                })
-                            }
+                        data={query.data}
                         renderItem={({item}) => {
                             return (
                             <>
-                                <QuestionContainer question={item} onChange={() => null}/>
+                                <QuestionContainer
+                                    question={item}
+                                    setValue={(answer: AnswerType) => {
+                                        const newState = new Map(answerGroup);
+                                        newState.set(item.id, answer);
+                                        setAnswerGroup(newState);
+                                        console.log(answerGroup);
+                                    }}
+                                />
                                 <Text>{JSON.stringify(item)}</Text>
                             </>)
                         }}

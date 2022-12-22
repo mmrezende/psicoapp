@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { TextInput, Title } from "react-native-paper";
 import { Question, QuestionType } from "../models/Question";
 import { BinaryInput } from "./BinaryInput";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { RadioGroup } from "./RadioGroup";
+import { TextArea } from "./TextArea";
 
-type Props = {question: Question, onChange: Function};
+type Props = {question: Question, setValue: Function};
 
+export const QuestionContainer = ({question, setValue} : Props) => {
+    const [binaryAnswer, setBinaryAnswer] = useState<boolean>(false);
+    const [singleChoiceAnswer, setSingleChoiceAnswer] = useState<number>(null);
+    const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState<number[]>([]);
+    const [textAnswer, setTextAnswer] = useState<string>("");
 
-export const QuestionContainer = ({question, onChange} : Props) => {
-    const [binaryAnswer, setBinaryAnswer] = useState<boolean>();
-    const [singleChoiceAnswer, setSingleChoiceAnswer] = useState<number>();
-    const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState<number[]>();
-    const [textAnswer, setTextAnswer] = useState<string>();
+    useEffect(() => {
+        switch(question.type) {
+            case QuestionType.BINARY:
+                return setValue(binaryAnswer);
+            case QuestionType.MULTIPLE_CHOICE:
+                return setValue(multipleChoiceAnswer);
+            case QuestionType.SINGLE_CHOICE:
+                return setValue(singleChoiceAnswer);
+            case QuestionType.TEXT:
+                return setValue(textAnswer);
+        }
+    }, [question.type, binaryAnswer, singleChoiceAnswer, multipleChoiceAnswer, textAnswer])
 
     const questionContent = () => {
         switch(question.type) {
@@ -42,7 +55,7 @@ export const QuestionContainer = ({question, onChange} : Props) => {
                 );
             case QuestionType.TEXT:
                 return (
-                    <TextInput 
+                    <TextArea
                         value={textAnswer}
                         onChangeText={setTextAnswer}
                     />

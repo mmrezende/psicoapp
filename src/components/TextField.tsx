@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native"
 import { Error } from "../helpers/types";
 
 interface Props {
-    label: string;
+    label?: string;
     error?: Error;
 }
 

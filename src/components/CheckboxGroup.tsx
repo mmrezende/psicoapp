@@ -16,7 +16,7 @@ export const CheckboxGroup = ({options, value, setValue}: Props) => (
                         if(checked) { 
                             setValue(value.concat([item.id]));
                         } else {
-                            setValue(value.filter(val => val === item.id));
+                            setValue(value.filter(val => val !== item.id));
                         }
                     }}
                 />
