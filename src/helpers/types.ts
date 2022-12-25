@@ -31,4 +31,4 @@ export type Answer = boolean | number | number[] | string;
 export type AnswerGroup = Map<Number,Answer>;
 
 export type FormattedAnswer = boolean | string | Option | Option[];
-export type FormattedAnswerGroup = Map<Number,FormattedAnswer>;
+export type FormattedAnswerGroup = Array<{question: Number, answer: FormattedAnswer}>;

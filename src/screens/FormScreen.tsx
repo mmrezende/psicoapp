@@ -22,7 +22,7 @@ export default function FormScreen({navigation, route}) {
     const handleSubmit = () => {
         const valid = true // TODO
         if(!valid) return;
-        const formattedAnswers: FormattedAnswerGroup = new Map();
+        const formattedAnswers: FormattedAnswerGroup = new Array();
         answerGroup.forEach((val, key) => {
             const question = query.data.find(item => item.id === key);
             let answer: FormattedAnswer;
@@ -38,7 +38,7 @@ export default function FormScreen({navigation, route}) {
                 answer = val;
             }
 
-            formattedAnswers.set(key, answer);
+            formattedAnswers.push({question: key, answer});
         });
         postAnswerGroup(axios, formattedAnswers);
     }
