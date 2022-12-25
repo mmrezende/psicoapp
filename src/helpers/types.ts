@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosResponse } from "axios";
+import { Option } from "../models/Option";
 import { User } from "../models/User";
 
 export type Error = Array<String> | string;
@@ -24,3 +25,10 @@ export type AuthResponse = {
     user: User
     token: string;
 }
+
+export type Answer = boolean | number | number[] | string;
+
+export type AnswerGroup = Map<Number,Answer>;
+
+export type FormattedAnswer = boolean | string | Option | Option[];
+export type FormattedAnswerGroup = Map<Number,FormattedAnswer>;

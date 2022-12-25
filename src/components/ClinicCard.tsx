@@ -13,7 +13,7 @@ export const ClinicCard = ({clinic, openForm} : Props) => (
 	</Card>
 );
 
-const LeftContent = props => <Avatar.Icon {...props} icon="brain" />
+const LeftContent = (props: any) => <Avatar.Icon {...props} icon="brain" />
 
 const styles = StyleSheet.create({
 	card: {

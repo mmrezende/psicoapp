@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import { Clinic } from "../models/Clinic";
 import { Form } from "../models/Form";
+import { AnswerGroup, FormattedAnswerGroup } from "./types";
 
 export async function getClinics(axios: AxiosInstance) {
     const { data } = await axios.get<{data: Clinic[]}>('/psicoapp/app/clinic');
@@ -16,4 +17,8 @@ export async function getForms(axios: AxiosInstance, clinic: Clinic) {
         .filter((val, index, arr) => { // Don't render duplicate questions
             return arr.findIndex(val2 => val2.id === val.id) === index;
         });
+}
+
+export async function postAnswerGroup(axios: AxiosInstance, answerGroup: FormattedAnswerGroup) {
+    await axios.post('/psicoapp/app/answerGroup', answerGroup);
 }

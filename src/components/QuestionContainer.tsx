@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { View } from "react-native";
-import { TextInput, Title } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Title } from "react-native-paper";
 import { Question, QuestionType } from "../models/Question";
 import { BinaryInput } from "./BinaryInput";
 import { CheckboxGroup } from "./CheckboxGroup";
@@ -26,7 +26,7 @@ export const QuestionContainer = ({question, setValue} : Props) => {
             case QuestionType.TEXT:
                 return setValue(textAnswer);
         }
-    }, [question.type, binaryAnswer, singleChoiceAnswer, multipleChoiceAnswer, textAnswer])
+    }, [binaryAnswer, singleChoiceAnswer, multipleChoiceAnswer, textAnswer])
 
     const questionContent = () => {
         switch(question.type) {
@@ -57,16 +57,25 @@ export const QuestionContainer = ({question, setValue} : Props) => {
                 return (
                     <TextArea
                         value={textAnswer}
-                        onChangeText={setTextAnswer}
+                        setValue={setTextAnswer}
                     />
                 );
         }
     }
 
     return (
-        <View>
-            <Title>{question.title}</Title>
+        <View style={styles.container}>
+            <Title style={styles.title} >{question.title}</Title>
             {questionContent()}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+
+    },
+    title: {
+        marginBottom: 8
+    }
+});

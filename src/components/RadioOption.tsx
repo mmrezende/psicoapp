@@ -6,7 +6,14 @@ type Props = {option: Option};
 
 export const RadioOption = ({option}: Props) => (
 	<View>
-        <RadioButton.Item value={String(option.id)} label={option.text}/>
+        <RadioButton.Item
+            value={String(option.id)}
+            label={option.text}
+            position={'leading'}
+            labelStyle={{textAlign: 'left'}}
+            labelVariant='labelLarge'
+            style={{paddingLeft: 0}}
+        />
         {option.image && <Image 
             source={{
                 uri: option.image.url,

@@ -1,20 +1,20 @@
-import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native";
-import { Error } from "../helpers/types";
+import {  StyleSheet } from "react-native";
+import { TextInput } from "react-native-paper";
 
+type Props = {value: string, setValue: (text: string) => void};
 
-export const TextArea = ({ ...inputProps } : TextInputProps) => (
+export const TextArea = ({value, setValue}: Props) => (
     <TextInput
         style={styles.input}
         multiline={true}
-        {...inputProps}
-      />
+        mode="outlined"
+        value={value}
+        onChangeText={setValue}
+    />
 );
 
 const styles = StyleSheet.create({
     input: {
-        borderWidth: 1,
-        paddingVertical: 32,
-        paddingHorizontal: 10,
-        borderColor: '#777'
+        height: 120,
     },
 });
