@@ -11,6 +11,7 @@ export const BinaryInput = ({value, setValue} : Props) => {
                 <Switch 
                     value={value}
                     style={styles.switch}
+                    onChange={() => setValue(!value)}
                 />
                 <Text variant="labelLarge">Sim</Text>
             </View>
