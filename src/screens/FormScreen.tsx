@@ -19,6 +19,8 @@ export default function FormScreen({navigation, route}) {
 
     const [answerGroup] = useState<AnswerGroup>(new Map());
 
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
     const handleSubmit = () => {
         const valid = true // TODO
         if(!valid) return;
@@ -40,7 +42,11 @@ export default function FormScreen({navigation, route}) {
 
             formattedAnswers.push({question: key, answer});
         });
-        postAnswerGroup(axios, formattedAnswers);
+        setIsSubmitting(true);
+
+        postAnswerGroup(axios, formattedAnswers)
+            .then(() => navigation.navigate('Home'))
+            .finally(() => setIsSubmitting(false));
     }
 
     return(
@@ -49,27 +55,32 @@ export default function FormScreen({navigation, route}) {
                 <Spinner/> :
                 query.data.length === 0 ?
                     <Text style={styles.warning}>Não há formulários pendentes para este consultório.</Text> :
-                    <FlatList
-                        data={query.data}
-                        renderItem={({item}) => {
-                            return (
-                            <View style={styles.questionContainer}>
-                                <QuestionContainer
-                                    question={item}
-                                    setValue={(answer: Answer) => {
-                                        answerGroup.set(item.id, answer);
-                                        console.log(answerGroup);
-                                    }}
-                                />
-                            </View>)
-                        }}
-                        keyExtractor={(item) => String(item.id)}
-                        style={styles.flatList}
-                    />
+                    <View style={styles.container}>
+                        <FlatList
+                            data={query.data}
+                            renderItem={({item}) => {
+                                return (
+                                <View style={styles.questionContainer}>
+                                    <QuestionContainer
+                                        question={item}
+                                        setValue={(answer: Answer) => {
+                                            answerGroup.set(item.id, answer);
+                                        }}
+                                    />
+                                </View>)
+                            }}
+                            keyExtractor={(item) => String(item.id)}
+                            style={styles.flatList}
+                        />
+                        <Button
+                            onPress={handleSubmit}
+                            mode='contained'
+                            style={styles.button}
+                            loading={isSubmitting}>
+                            Enviar
+                        </Button>
+                    </View>
             }
-            <Button onPress={handleSubmit}>
-                Enviar
-            </Button>
         </View>
     );
 }
@@ -92,5 +103,9 @@ const styles = StyleSheet.create({
     questionContainer: {
         marginBottom: 32,
         padding: 8
+    },
+    button: {
+        marginVertical: 8,
+        position: 'relative'
     }
 });

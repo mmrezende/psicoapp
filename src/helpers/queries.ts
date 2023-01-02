@@ -20,5 +20,5 @@ export async function getForms(axios: AxiosInstance, clinic: Clinic) {
 }
 
 export async function postAnswerGroup(axios: AxiosInstance, answerGroup: FormattedAnswerGroup) {
-    await axios.post('/psicoapp/app/answerGroup', answerGroup);
+    return axios.post('/psicoapp/app/answerGroup', answerGroup);
 }

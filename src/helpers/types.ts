@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosResponse } from "axios";
 import { Option } from "../models/Option";
 import { User } from "../models/User";
 
-export type Error = Array<String> | string;
+export type Error = Array<string> | string;
 
 export type LoginData = {
     email: string;
