@@ -1,16 +1,18 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
 import { Spinner } from '../components/Spinner';
+import { registerForPushNotificationsAsync, schedulePushNotification } from '../notifications';
+import { Button } from 'react-native-paper';
 
 export default function LoginScreen({ navigation }) {
     const { login } = useContext(AuthContext);
 
-    const { register, setValue, handleSubmit } = useForm();
+    const { register, setValue, getValues, handleSubmit } = useForm({shouldUnregister: true});
     const [ errors, setErrors ] = useState<{[field: string]: Error}>(null);
     const [loading, setLoading ] = useState(false);
 
@@ -20,15 +22,14 @@ export default function LoginScreen({ navigation }) {
         }, [register]
     );
 
-    useEffect(() => {
-        setValue('email', 'lh.lagonds@gmail.com'),
-        setValue('password', 'asdasdasd');
-    });
-
     const onSubmit = (data: LoginData) => {
         setLoading(true);
         setErrors(null);
         login(data)
+            .then(() => {
+                registerForPushNotificationsAsync()
+                    .then(() => schedulePushNotification());
+            })
             .catch((err) => {
                 const fields = err.response?.data?.errors;
                 setErrors(fields);
@@ -54,8 +55,10 @@ export default function LoginScreen({ navigation }) {
                     placeholder='Digite seu e-mail'
                     keyboardType='email-address'
                     autoComplete='email'
+                    value={getValues('email')}
                     onChangeText={(text) => setValue('email', text)}
-                    error={errors?.email}
+                    error={errors !== null}
+                    errorMessage={errors?.email}
                 />
                 <TextField
                     label='Senha'
@@ -63,13 +66,14 @@ export default function LoginScreen({ navigation }) {
                     autoComplete='password'
                     secureTextEntry={true}
                     onChangeText={(text) => setValue('password', text)}
-                    error={errors?.password}
+                    error={errors !== null}
+                    errorMessage={errors?.password}
                 />
                 <View style={styles.button}>
-                    <Button 
-                        title='Entrar'
+                    <Button
                         onPress={handleSubmit(onSubmit)}
-                    />
+                        mode='contained'
+                    >Entrar</Button>
                 </View>
             </View>
         </View>
@@ -81,9 +85,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        justifyContent: 'space-around'
     },
     header: {
-        marginTop: 50,
+        marginTop: 48,
+        marginBottom: 12,
         alignItems: 'center'
     },
     logo: {
@@ -100,6 +106,8 @@ const styles = StyleSheet.create({
         width: 256
     },
     button: {
-        marginTop: 24
+        marginTop: 12,
+        width: 120,
+        alignSelf: 'center'
     }
 });

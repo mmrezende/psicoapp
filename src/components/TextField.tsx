@@ -1,34 +1,27 @@
-import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native";
+import { View, StyleSheet, } from "react-native";
+import { Text, TextInput, TextInputProps } from "react-native-paper";
 import { Error } from "../helpers/types";
 
-interface Props {
-    label?: string;
-    error?: Error;
-}
+type Props = {errorMessage: Error}
 
-export const TextField = ({ label, error, ...inputProps } : Props & TextInputProps) => (
+export const TextField = ({ errorMessage, error, ...inputProps } : Props & TextInputProps) => (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
         {...inputProps}
+        error={error}
+        mode='outlined'
       />
-      {error && <Text style={styles.errorMessage}>{error}</Text>}
+      {error && <Text style={styles.errorMessage}>{errorMessage instanceof Array ? errorMessage[0] : errorMessage}</Text>}
     </View>
 );
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
+        marginBottom: 8
     },
     label: {
         marginVertical: 8
-    },
-    input: {
-        borderWidth: 1,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderColor: '#777'
     },
     errorMessage: {
         paddingVertical: 5,

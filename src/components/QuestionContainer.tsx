@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Title } from "react-native-paper";
+import { Text, Title } from "react-native-paper";
 import { Question, QuestionType } from "../models/Question";
 import { BinaryInput } from "./BinaryInput";
 import { CheckboxGroup } from "./CheckboxGroup";
@@ -65,7 +65,7 @@ export const QuestionContainer = ({question, setValue} : Props) => {
 
     return (
         <View style={styles.container}>
-            <Title style={styles.title} >{question.title}</Title>
+            <Title style={styles.title} >{question.title} <Text style={{color: 'red'}}>*</Text></Title>
             {questionContent()}
         </View>
     );
@@ -77,5 +77,9 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 8
+    },
+    line: {
+        flexDirection: 'row',
+        alignItems: 'center',
     }
 });

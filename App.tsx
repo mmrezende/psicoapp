@@ -1,5 +1,5 @@
 import { AuthProvider } from './src/auth/AuthContext';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider, Text } from 'react-native-paper';
 import Navigator from './src/Navigator';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
