@@ -1,7 +1,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
@@ -19,6 +19,11 @@ export default function LoginScreen({ navigation }) {
             register('password')
         }, [register]
     );
+
+    useEffect(() => {
+        setValue('email', 'lh.lagonds@gmail.com'),
+        setValue('password', 'asdasdasd');
+    });
 
     const onSubmit = (data: LoginData) => {
         setLoading(true);
@@ -73,9 +78,9 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
     },
     header: {
         marginTop: 50,

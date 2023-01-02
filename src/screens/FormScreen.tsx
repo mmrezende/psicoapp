@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { AxiosError } from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { AuthContext } from "../auth/AuthContext";
 import { QuestionContainer } from "../components/QuestionContainer";
@@ -22,8 +23,12 @@ export default function FormScreen({navigation, route}) {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const handleSubmit = () => {
-        const valid = true // TODO
-        if(!valid) return;
+        const valid = Array.from(answerGroup.values())
+            .every(answer => answer !== null && answer !== "");
+
+        if(!valid) {
+            return Alert.alert('Erro', 'Verifique as respostas preenchidas');
+        }
         const formattedAnswers: FormattedAnswerGroup = new Array();
         answerGroup.forEach((val, key) => {
             const question = query.data.find(item => item.id === key);
@@ -46,6 +51,7 @@ export default function FormScreen({navigation, route}) {
 
         postAnswerGroup(axios, formattedAnswers)
             .then(() => navigation.navigate('Home'))
+            .catch((err: AxiosError) => Alert.alert('Falha na requisição com o servidor', `Motivo: ${err.message}`))
             .finally(() => setIsSubmitting(false));
     }
 
@@ -58,6 +64,7 @@ export default function FormScreen({navigation, route}) {
                     <View style={styles.container}>
                         <FlatList
                             data={query.data}
+                            removeClippedSubviews={false}
                             renderItem={({item}) => {
                                 return (
                                 <View style={styles.questionContainer}>
@@ -76,7 +83,8 @@ export default function FormScreen({navigation, route}) {
                             onPress={handleSubmit}
                             mode='contained'
                             style={styles.button}
-                            loading={isSubmitting}>
+                            loading={isSubmitting}
+                            disabled={isSubmitting}>
                             Enviar
                         </Button>
                     </View>
