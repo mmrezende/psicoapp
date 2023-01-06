@@ -14,7 +14,7 @@ export async function schedulePushNotification() {
     await Notifications.cancelAllScheduledNotificationsAsync();
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "PCare",
+        title: "PsicoApp",
         body: 'Está na hora de responder o questionário diário deixado por seu psicólogo.',
       },
       trigger: {

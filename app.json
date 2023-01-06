@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "PsicoApp",
+    "slug": "psicoapp",
+    "version": "20",
+    "extra": {
+      "eas": {
+        "projectId": "686a0486-3e16-4223-a2f2-441f935e6585"
+      }
+    },
+    "android": {
+      "package": "br.com.nextline.psicApp",
+      "versionCode": "20"
+    }
+  }
+}
