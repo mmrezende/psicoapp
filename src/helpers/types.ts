@@ -1,6 +1,13 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { Option } from "../models/Option";
+import { File } from "../models/File";
 import { User } from "../models/User";
+
+export enum QuestionType {
+    BINARY = "BINARY",
+    MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+    SINGLE_CHOICE = "SINGLE_CHOICE",
+    TEXT = "TEXT"
+}
 
 export type Error = Array<string> | string;
 
@@ -30,5 +37,6 @@ export type Answer = boolean | number | number[] | string;
 
 export type AnswerGroup = Map<Number,Answer>;
 
-export type FormattedAnswer = boolean | string | Option | Option[];
-export type FormattedAnswerGroup = Array<{question: Number, answer: FormattedAnswer}>;
+export type FormattedOption = {text?: string, image?: File}
+
+export type FormattedAnswer = {question: Number, type: QuestionType, value: FormattedOption[]};

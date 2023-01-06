@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, Title } from "react-native-paper";
-import { Question, QuestionType } from "../models/Question";
+import { QuestionType } from "../helpers/types";
+import { Question } from "../models/Question";
 import { BinaryInput } from "./BinaryInput";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { RadioGroup } from "./RadioGroup";

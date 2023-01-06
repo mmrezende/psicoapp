@@ -1,7 +1,7 @@
 import { AxiosInstance } from "axios";
 import { Clinic } from "../models/Clinic";
 import { Form } from "../models/Form";
-import { AnswerGroup, FormattedAnswerGroup } from "./types";
+import { FormattedAnswer } from "./types";
 
 export async function getClinics(axios: AxiosInstance) {
     const { data } = await axios.get<{data: Clinic[]}>('/psicoapp/app/clinic');
@@ -19,6 +19,6 @@ export async function getForms(axios: AxiosInstance, clinic: Clinic) {
         });
 }
 
-export async function postAnswerGroup(axios: AxiosInstance, answerGroup: FormattedAnswerGroup) {
-    return axios.post('/psicoapp/app/answerGroup', answerGroup);
+export async function postAnswerGroup(axios: AxiosInstance, clinic: Clinic, answerGroup: FormattedAnswer[]) {
+    return axios.post(`/psicoapp/app/${clinic.id}/answerGroup`, answerGroup);
 }

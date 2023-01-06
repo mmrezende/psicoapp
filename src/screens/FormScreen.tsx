@@ -7,7 +7,8 @@ import { AuthContext } from "../auth/AuthContext";
 import { QuestionContainer } from "../components/QuestionContainer";
 import { Spinner } from "../components/Spinner";
 import { getForms, postAnswerGroup } from "../helpers/queries";
-import { Answer, AnswerGroup, FormattedAnswer, FormattedAnswerGroup } from "../helpers/types";
+import { Answer, AnswerGroup, FormattedAnswer, FormattedOption } from "../helpers/types";
+import { Option } from "../models/Option";
 
 export default function FormScreen({navigation, route}) {
     const { axios } = useContext(AuthContext);
@@ -29,29 +30,40 @@ export default function FormScreen({navigation, route}) {
         if(!valid) {
             return Alert.alert('Erro', 'Verifique as respostas preenchidas');
         }
-        const formattedAnswers: FormattedAnswerGroup = new Array();
+        const formattedAnswers: FormattedAnswer[] = new Array();
+        const optionFormat = (option: Option) => ({text: option.text, image: option.image});
+
         answerGroup.forEach((val, key) => {
             const question = query.data.find(item => item.id === key);
-            let answer: FormattedAnswer;
+            let value: FormattedOption[];
             if(val instanceof Array) {
-                answer = val.map((optionId) => 
+                const options = val.map((optionId) => 
                     question.options
                         .find(option => option.id === optionId)
                 );
+
+                value = options.map(optionFormat);
             }else if(typeof val === "number") {
-                answer = question.options
-                    .find(option => option.id === val);
+                const options = [
+                    question.options
+                    .find(option => option.id === val)
+                ];
+                value = options.map(optionFormat);
+            } else if(typeof val === "boolean"){
+                value = [{text: val ? "Sim" : "Não"}];
             } else {
-                answer = val;
+                value = [{text: val}]
             }
 
-            formattedAnswers.push({question: key, answer});
+            formattedAnswers.push({question: key, type: question.type, value});
         });
         setIsSubmitting(true);
 
-        postAnswerGroup(axios, formattedAnswers)
+        postAnswerGroup(axios, clinic, formattedAnswers)
             .then(() => navigation.navigate('Home'))
-            .catch((err: AxiosError) => Alert.alert('Falha na requisição com o servidor', `Motivo: ${err.message}`))
+            .catch((err: AxiosError) => {
+                Alert.alert('Falha na requisição com o servidor', `Motivo: ${err.message}`);
+            })
             .finally(() => setIsSubmitting(false));
     }
 
