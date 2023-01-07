@@ -10,7 +10,7 @@
     },
     "android": {
       "package": "br.com.nextline.psicApp",
-      "versionCode": "21"
+      "versionCode": 21
     }
   }
 }
