@@ -31,7 +31,7 @@ export default function FormScreen({navigation, route}) {
             return Alert.alert('Erro', 'Verifique as respostas preenchidas');
         }
         const formattedAnswers: FormattedAnswer[] = new Array();
-        const optionFormat = (option: Option) => ({text: option.text, image: option.image});
+        const optionFormat = (option: Option) => ({text: option.text, image: option.image ?? undefined});
 
         answerGroup.forEach((val, key) => {
             const question = query.data.find(item => item.id === key);
