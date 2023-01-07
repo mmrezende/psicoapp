@@ -11,14 +11,14 @@ export const TextField = ({ errorMessage, error, ...inputProps } : Props & TextI
         error={error}
         mode='outlined'
       />
-      {error && <Text style={styles.errorMessage}>{errorMessage instanceof Array ? errorMessage[0] : errorMessage}</Text>}
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage instanceof Array ? errorMessage[0] : errorMessage}</Text>}
     </View>
 );
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        marginBottom: 8
+        marginBottom: 16
     },
     label: {
         marginVertical: 8

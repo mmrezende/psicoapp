@@ -4,6 +4,7 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
 import { API_URL } from '@env'; 
 import { Auth, AuthResponse, AuthContextType, LoginData } from '../helpers/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext<AuthContextType>(null);
 const {Provider} = AuthContext;
@@ -42,6 +43,8 @@ const AuthProvider = ({children} : PropsWithChildren) => {
     });
 
     const logout = async() => {
+        await AsyncStorage.removeItem('login');
+
         return authAxios
             .post<AuthResponse>('/auth/logout')
             .then(() => {
@@ -52,7 +55,15 @@ const AuthProvider = ({children} : PropsWithChildren) => {
             });
     }
 
-    const login = async(data: LoginData) => {
+    const login = async(inputData: LoginData, remember=false) => {
+        if(remember) {
+            AsyncStorage.setItem('login', JSON.stringify(inputData));
+        }
+
+        return loginRequest(inputData);
+    }
+
+    const loginRequest = async(data: LoginData) => {
         return authAxios
             .post<AuthResponse>('/auth/login', {...data, app: true})
             .then(response => {
@@ -67,6 +78,7 @@ const AuthProvider = ({children} : PropsWithChildren) => {
                     authenticated: false,
                     user: null
                 });
+                console.log(error)
                 throw error;
             });
     }

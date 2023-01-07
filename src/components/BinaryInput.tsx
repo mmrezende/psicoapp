@@ -1,19 +1,18 @@
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { Switch, Text } from "react-native-paper";
 
-type Props = {value: boolean, setValue: Function};
+type Props = {value: boolean, setValue: Function, label?: string};
 
-export const BinaryInput = ({value, setValue} : Props) => {
+export const BinaryInput = ({value, setValue, label} : Props) => {
     return (
         <TouchableWithoutFeedback onPress={() => setValue(!value)}>
             <View style={styles.container}>
-                <Text variant="labelLarge">Não</Text>
+                {label && <Text variant="labelLarge">{label}</Text>}
                 <Switch 
                     value={value}
                     style={styles.switch}
                     onChange={() => setValue(!value)}
                 />
-                <Text variant="labelLarge">Sim</Text>
             </View>
         </TouchableWithoutFeedback>
     );
@@ -21,9 +20,10 @@ export const BinaryInput = ({value, setValue} : Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
+        marginLeft: 8,
         flexDirection: 'row',
-        marginLeft: 8
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     switch: {
         marginHorizontal: 8

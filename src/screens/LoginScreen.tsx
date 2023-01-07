@@ -1,31 +1,38 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
 import { Spinner } from '../components/Spinner';
+import { BinaryInput } from '../components/BinaryInput';
 import { registerForPushNotificationsAsync, schedulePushNotification } from '../notifications';
-import { Button } from 'react-native-paper';
+import { Button, DefaultTheme, Switch } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({ navigation }) {
     const { login } = useContext(AuthContext);
-
-    const { register, setValue, getValues, handleSubmit } = useForm({shouldUnregister: true});
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [ errors, setErrors ] = useState<{[field: string]: Error}>(null);
+    const [ remember, setRemember ] = useState<boolean>(false);
     const [loading, setLoading ] = useState(false);
 
     useEffect(() => {
-            register('email')
-            register('password')
-        }, [register]
-    );
+        AsyncStorage
+            .getItem('login')
+            .then((cachedData) => {
+                if(cachedData !== null){
+                    handleSubmit(JSON.parse(cachedData))
+                }
+            });
+    },[]);
 
-    const onSubmit = (data: LoginData) => {
+    const handleSubmit = (data: LoginData) => {
         setLoading(true);
         setErrors(null);
-        login(data)
+        login(data, remember)
             .then(() => {
                 registerForPushNotificationsAsync()
                     .then(() => schedulePushNotification());
@@ -55,23 +62,31 @@ export default function LoginScreen({ navigation }) {
                     placeholder='Digite seu e-mail'
                     keyboardType='email-address'
                     autoComplete='email'
-                    value={getValues('email')}
-                    onChangeText={(text) => setValue('email', text)}
+                    value={email}
+                    onChangeText={setEmail}
                     error={errors !== null}
                     errorMessage={errors?.email}
+                    theme={DefaultTheme}
                 />
                 <TextField
                     label='Senha'
                     placeholder='Digite sua senha'
                     autoComplete='password'
                     secureTextEntry={true}
-                    onChangeText={(text) => setValue('password', text)}
+                    value={password}
+                    onChangeText={setPassword}
                     error={errors !== null}
                     errorMessage={errors?.password}
+                    theme={DefaultTheme}
+                />
+                <BinaryInput
+                    value={remember}
+                    setValue={setRemember}
+                    label="Lembrar de mim"
                 />
                 <View style={styles.button}>
                     <Button
-                        onPress={handleSubmit(onSubmit)}
+                        onPress={() => handleSubmit({email, password})}
                         mode='contained'
                     >Entrar</Button>
                 </View>
@@ -93,8 +108,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-        width: 128,
-        height: 128
+        width: 96,
+        height: 96
     },
     title: {
         fontWeight: 'bold',

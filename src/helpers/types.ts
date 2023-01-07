@@ -24,7 +24,7 @@ export type Auth = {
 export type AuthContextType = {
     authState: Auth,
     axios: AxiosInstance;
-    login: (data: LoginData) => Promise<AxiosResponse<AuthResponse>>;
+    login: (data: LoginData, remember: boolean) => Promise<AxiosResponse<AuthResponse>>;
     logout: () => Promise<void>;
 }
 
