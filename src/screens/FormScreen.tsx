@@ -35,27 +35,27 @@ export default function FormScreen({navigation, route}) {
 
         answerGroup.forEach((val, key) => {
             const question = query.data.find(item => item.id === key);
-            let value: FormattedOption[];
+            let content: FormattedOption[];
             if(val instanceof Array) {
                 const options = val.map((optionId) => 
                     question.options
                         .find(option => option.id === optionId)
                 );
 
-                value = options.map(optionFormat);
+                content = options.map(optionFormat);
             }else if(typeof val === "number") {
                 const options = [
                     question.options
                     .find(option => option.id === val)
                 ];
-                value = options.map(optionFormat);
+                content = options.map(optionFormat);
             } else if(typeof val === "boolean"){
-                value = [{text: val ? "Sim" : "Não"}];
+                content = [{text: val ? "Sim" : "Não"}];
             } else {
-                value = [{text: val}]
+                content = [{text: val}]
             }
 
-            formattedAnswers.push({question: key, type: question.type, value});
+            formattedAnswers.push({question: key, type: question.type, content});
         });
         setIsSubmitting(true);
 

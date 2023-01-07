@@ -39,4 +39,4 @@ export type AnswerGroup = Map<Number,Answer>;
 
 export type FormattedOption = {text?: string, image?: File}
 
-export type FormattedAnswer = {question: Number, type: QuestionType, value: FormattedOption[]};
+export type FormattedAnswer = {question: Number, type: QuestionType, content: FormattedOption[]};
