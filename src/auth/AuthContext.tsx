@@ -1,13 +1,13 @@
 import {createContext, PropsWithChildren, useState} from 'react';
 import axios, { AxiosError } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-
-import { API_URL } from '@env'; 
 import { Auth, AuthResponse, AuthContextType, LoginData } from '../helpers/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext<AuthContextType>(null);
 const {Provider} = AuthContext;
+
+const API_URL = "https://pcare.nextline.com.br/api";
 
 const AuthProvider = ({children} : PropsWithChildren) => {
     const [authState, setAuthState] = useState<Auth>({

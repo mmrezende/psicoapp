@@ -1,7 +1,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert } from 'react-native';
 import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
@@ -10,6 +10,7 @@ import { BinaryInput } from '../components/BinaryInput';
 import { registerForPushNotificationsAsync, schedulePushNotification } from '../notifications';
 import { Button, DefaultTheme, Switch } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AxiosError } from 'axios';
 
 export default function LoginScreen({ navigation }) {
     const { login } = useContext(AuthContext);
@@ -40,6 +41,7 @@ export default function LoginScreen({ navigation }) {
             .catch((err) => {
                 const fields = err.response?.data?.errors;
                 setErrors(fields);
+                Alert.alert('Erro no login', JSON.stringify(err));
             })
             .finally(() => setLoading(false))
     };
