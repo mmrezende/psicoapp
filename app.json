@@ -2,7 +2,7 @@
   "expo": {
     "name": "PsicoApp",
     "slug": "psicoapp",
-    "version": "23",
+    "version": "24",
     "icon": "assets/logo.png",
     "extra": {
       "eas": {
@@ -11,7 +11,7 @@
     },
     "android": {
       "package": "br.com.nextline.psicApp",
-      "versionCode": 23
+      "versionCode": 24
     }
   }
 }
