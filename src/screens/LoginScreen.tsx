@@ -1,7 +1,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, Platform } from 'react-native';
 import { TextField } from '../components/TextField';
 import { Error, LoginData } from '../helpers/types'
 import { AuthContext } from '../auth/AuthContext';
@@ -38,10 +38,14 @@ export default function LoginScreen({ navigation }) {
                 registerForPushNotificationsAsync()
                     .then(() => schedulePushNotification());
             })
-            .catch((err) => {
+            .catch((err: AxiosError<LoginData>) => {
+                if(err.code === 'ERR_NETWORK') {
+                    Alert.alert("Erro no login", "Falha de conexão com o servidor");
+                    return;
+                }
                 const fields = err.response?.data?.errors;
                 setErrors(fields);
-                Alert.alert('Erro no login', JSON.stringify(err));
+                console.log(err.toJSON());
             })
             .finally(() => setLoading(false))
     };
@@ -69,6 +73,7 @@ export default function LoginScreen({ navigation }) {
                     error={errors !== null}
                     errorMessage={errors?.email}
                     theme={DefaultTheme}
+                    autoCapitalize='none'
                 />
                 <TextField
                     label='Senha'
@@ -80,6 +85,8 @@ export default function LoginScreen({ navigation }) {
                     error={errors !== null}
                     errorMessage={errors?.password}
                     theme={DefaultTheme}
+                    autoCapitalize='none'
+                    keyboardType={Platform.OS === 'android' ? 'visible-password' : 'numbers-and-punctuation'}
                 />
                 <BinaryInput
                     value={remember}

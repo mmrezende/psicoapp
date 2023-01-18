@@ -14,6 +14,7 @@ export type Error = Array<string> | string;
 export type LoginData = {
     email: string;
     password: string;
+    errors?: any;
 }
 
 export type Auth = {
