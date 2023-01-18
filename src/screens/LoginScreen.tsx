@@ -86,7 +86,6 @@ export default function LoginScreen({ navigation }) {
                     errorMessage={errors?.password}
                     theme={DefaultTheme}
                     autoCapitalize='none'
-                    keyboardType={Platform.OS === 'android' ? 'visible-password' : 'numbers-and-punctuation'}
                 />
                 <BinaryInput
                     value={remember}
